@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--父级项目一般都是用pom来子项目依赖,一般软件的版本号/插件/都在这里进行定义,统一做管理-->
+    <!--install的时候parent也是要最新instal的,不然其他依赖就依赖不到这里了-->
+
+    <groupId>com.stevegocoding.ssh-minitwit-parent</groupId>
+    <artifactId>minitwit-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>ssh-minitwit</name>
+
+    <!-- Children Modules -->
+    <modules>
+        <module>../minitwit-webapp</module>
+    </modules>
+
+    <!-- ###### 集中定义公用的依赖版本号 - start ###### -->
+    <properties>
+        <jdk.version>1.8</jdk.version>
+
+        <spring.version>4.3.1.RELEASE</spring.version>
+
+        <hibernate.version>5.2.0</hibernate.version>
+
+        <!--下面这两个是springAOP需要用到-->
+        <aspectjweaver.version>1.7.2</aspectjweaver.version>
+        <persistence-api.version>1.0.2</persistence-api.version>
+
+        <!-- Junit -->
+        <junit.version>4.11</junit.version>
+
+        <!-- MySql Driver -->
+        <mysql-connector.version>5.1.31</mysql-connector.version>
+
+        <!-- Druid connection pool -->
+        <druid.version>1.0.4</druid.version>
+
+        <!-- Logging -->
+        <slf4j.version>1.7.7</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+
+        <javaee-api.version>7.0</javaee-api.version>
+        <jstl.version>1.2</jstl.version>
+        <jsp-api.version>2.2</jsp-api.version>
+        <servlet-api.version>3.1</servlet-api.version>
+
+        <jackson-databind.version>2.4.2</jackson-databind.version>
+        <fastjson.version>1.1.43</fastjson.version>
+
+        <commons-fileupload.version>1.3.1</commons-fileupload.version>
+        <commons-io.version>2.4</commons-io.version>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
+        <commons-email.version>1.3.2</commons-email.version>
+        <commons-beanutils.version>1.9.2</commons-beanutils.version>
+
+        <!--##### 插件版本变量 start ###### -->
+        <tomcat6-maven-plugin.version>2.1</tomcat6-maven-plugin.version>
+        <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
+        <jetty-plugin.version>8.1.16.v20140903</jetty-plugin.version>
+
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <maven-war-plugin.version>2.3</maven-war-plugin.version>
+        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+        <maven-install-plugin.version>2.4</maven-install-plugin.version>
+        <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
+        <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+        <maven-dependency-plugin.version>2.5.1</maven-dependency-plugin.version>
+        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <!--####### 插件版本变量 end ###### -->
+
+        <jetty-port.version>8080</jetty-port.version>
+        <jetty-path.version>/</jetty-path.version>
+
+    </properties>
+    <!-- ###### 集中定义公用的依赖版本号 - end ###### -->
+
+
+    <!-- ###### 集中管理依赖包 start ###### -->
+    <dependencyManagement>
+
+        <dependencies>
+
+            <!-- ####### Spring 相关包 - start #######-->
+            <!-- webmvc 是核心包, core和web都是其依赖 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>{spring.version}</version>
+            </dependency>
+            <!-- ####### Spring 相关包 - end #######-->
+
+
+            <!--这个jar 文件包含支持UI模版（Velocity，FreeMarker，JasperReports），邮件服务，脚本服务(JRuby)，缓存Cache（EHCache），任务计划Scheduling（uartz）方面的类。 外部依赖spring-context-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!-- ####### Spring 相关包 - end #######-->
+
+            <!-- ###### Persistence 相关包 - start ####### -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>{spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <!-- ###### Persistence 相关包 - end ####### -->
+
+            <!-- ###### JavaEE包 - start ####### -->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${javaee-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>${persistence-api.version}</version>
+            </dependency>
+
+            <!-- JSTL标签类 -->
+            <dependency>
+                <groupId>jstl</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>${jsp-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- ###### JavaEE包 - end ####### -->
+
+            <!-- ###### Test - start ####### -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- ###### Test - end ####### -->
+
+            <!-- ###### Logging - start ####### -->
+            <!--下面这三个是配套使用：http://blog.csdn.net/woshiwxw765/article/details/7624556-->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <!-- ###### Logging - end ####### -->
+
+            <!--###### JSON处理 start ###### -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+            <!--###### JSON处理 end ###### -->
+
+            <!--apache工具包-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+    <!-- ###### 集中管理依赖包 end ###### -->
+
+    <build>
+
+        <!-- ###### 集中管理插件 start ###### -->
+        <pluginManagement>
+            <plugins>
+                <!-- Compiler 插件, 设定JDK版本 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                        <encoding>UTF-8</encoding>
+                        <showWarnings>true</showWarnings>
+                    </configuration>
+                </plugin>
+
+                <!--jetty插件-->
+                <!--http://www.eclipse.org/jetty/documentation/9.0.0.M3/jetty-maven-plugin.html-->
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${jetty-plugin.version}</version>
+                    <configuration>
+                        <stopKey>foo</stopKey>
+                        <stopPort>9999</stopPort>
+                        <connectors>
+                            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                                <port>${jetty-port.version}</port>
+                            </connector>
+                        </connectors>
+                        <webApp>
+                            <!--访问地址：http://localhost:8080/index.jsp-->
+                            <!--如果不带index.jsp会直接报404，这个一直没找到原因-->
+                            <contextPath>${jetty-path.version}</contextPath>
+                        </webApp>
+                        <!--scanIntervalSeconds 可选[秒]。在很短的时间间隔内在扫描web应用检查是否有改变，如果发觉有任何改变则自动热部署。默认为0，表示禁用热部署检查。任何一个大于0的数字都将表示启用。-->
+                        <scanIntervalSeconds>10</scanIntervalSeconds>
+                    </configuration>
+                </plugin>
+
+                <!-- resource插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+
+                <!-- source插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                </plugin>
+
+                <!-- install插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install-plugin.version}</version>
+                </plugin>
+
+                <!-- clean插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin.version}</version>
+                </plugin>
+
+                <!-- ant插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun-plugin.version}</version>
+                </plugin>
+
+                <!-- dependency插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency-plugin.version}</version>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+        <!-- ###### 集中管理插件 end ###### -->
+    </build>
+
+</project>
