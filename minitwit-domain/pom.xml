@@ -12,5 +12,14 @@
 
     <artifactId>minitwit-domain</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+        </dependency>
+
+        
+    </dependencies>
+
 
 </project>

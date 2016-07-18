@@ -24,7 +24,7 @@
 
         <spring.version>4.3.1.RELEASE</spring.version>
 
-        <hibernate.version>5.2.0</hibernate.version>
+        <hibernate.version>5.1.0.Final</hibernate.version>
 
         <!--下面这两个是springAOP需要用到-->
         <aspectjweaver.version>1.7.2</aspectjweaver.version>
@@ -89,7 +89,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>{spring.version}</version>
+                <version>${spring.version}</version>
             </dependency>
             <!-- ####### Spring 相关包 - end #######-->
 
@@ -118,14 +118,30 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>{spring.version}</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
+                <artifactId>hibernate-entitymanager</artifactId>
                 <version>${hibernate.version}</version>
             </dependency>
+
+            <!-- 导入Mysql数据库链接jar包 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <!--这个组件具体可以看这里介绍:http://www.oschina.net/p/druid-->
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
             <!-- ###### Persistence 相关包 - end ####### -->
 
             <!-- ###### JavaEE包 - start ####### -->

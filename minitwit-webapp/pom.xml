@@ -14,10 +14,38 @@
     <artifactId>minitwit-webapp</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>../minitwit-dao</module>
+        <module>../minitwit-persist</module>
         <module>../minitwit-service</module>
         <module>../minitwit-domain</module>
         <module>../minitwit-web</module>
     </modules>
+
+    <build>
+        <plugins>
+            <!--jetty插件-->
+            <!--http://www.eclipse.org/jetty/documentation/9.0.0.M3/jetty-maven-plugin.html-->
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty-plugin.version}</version>
+                <configuration>
+                    <stopKey>foo</stopKey>
+                    <stopPort>9999</stopPort>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>${jetty-port.version}</port>
+                        </connector>
+                    </connectors>
+                    <webApp>
+                        <!--访问地址：http://localhost:8080/index.jsp-->
+                        <!--如果不带index.jsp会直接报404，这个一直没找到原因-->
+                        <contextPath>${jetty-path.version}</contextPath>
+                    </webApp>
+                    <!--scanIntervalSeconds 可选[秒]。在很短的时间间隔内在扫描web应用检查是否有改变，如果发觉有任何改变则自动热部署。默认为0，表示禁用热部署检查。任何一个大于0的数字都将表示启用。-->
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
