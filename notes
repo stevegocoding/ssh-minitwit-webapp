@@ -1,0 +1,115 @@
+- Spring, Hibernate, JPA Persistence Layer
+
+* Config
+
+** Create or look up a DataSource
+
+** Create or look up a persistence unit and configure Spring to inject it in your repositories.
+
+** Setup transaction management so that @Transactional methods are properly handled
+
+--------------------------------------------------------------------------------------------------------------------
+
+* Transaction Management
+
+** @PersistenceContext
+
+- java
+@PersistenceContext
+private EntityManager em;
+
+em is not actual entity manager, but rather a context aware proxy that delegates entity manager at runtime
+since  entity manage (session in hibernate) is NOT thread safe
+
+** @Transactional
+
+*** EntityManager proxy
+when call entityManager.persist(), entityManager is the proxy, it calls the proxy to retrieve the current entity manager from the thread,
+managed by the transaction manager
+
+*** Transaction aspect
+It is a "around" aspect
+
+*** Transaction manager
+
+The transaction manager needs to provide an answer to two questions:
++ should a new Entity Manager be created?
++ should a new database transaction be started?
+
+This needs to be decided at the moment the Transactional Aspect 'before' logic is called. The transaction manager will decide based on:
+
++ the fact that one transaction is already ongoing or not
++ the propagation attribute of the transactional method (for example REQUIRES_NEW always starts a new transaction)
+
+If the transaction manager decides to create a new transaction, then it will:
+
++ create a new entity manager
++ bind the entity manager to the current thread
++ grab a connection from the DB connection pool
++ bind the connection to the current thread
+
+The entity manager and the connection are both bound to the current thread using ThreadLocal variables.
+
+** Put it together
+
+*** Config the entity manager factory that allows us to inject the entity manager via @PersistenceContext
+
+@Configuration
+public class EntityManagerFactoriesConfiguration {
+    @Autowired
+    private DataSource dataSource;
+
+    @Bean(name = "entityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean emf() {
+        LocalContainerEntityManagerFactoryBean emf = ...
+        emf.setDataSource(dataSource);
+        emf.setPackagesToScan(
+            new String[] {"your.package"});
+        emf.setJpaVendorAdapter(
+            new HibernateJpaVendorAdapter());
+        return emf;
+    }
+}
+
+*** Config the transaction manager that allows us to use @Transactional
+
+@Configuration
+@EnableTransactionManagement   // <-- enable the @Transactional annotation
+public class TransactionManagersConfig {
+    @Autowired
+    EntityManagerFactory emf;
+    @Autowired
+    private DataSource dataSource;
+
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager tm =
+            new JpaTransactionManager();
+            tm.setEntityManagerFactory(emf);
+            tm.setDataSource(dataSource);
+        return tm;
+    }
+}
+
+The most important thing to bear in mind is that there are really two concepts to take into account:
+
++ the database transaction
++ the persistence context, each with it's own not readily apparent life cycle.
+
+
+
+
+
+
+
+TODO:
+
+- Docker & MySQL setup
+
+- Initialize database schema
+
+- Config spring/jpa/hibernate, data source, jndi, entity manager factory ...
+
+- Entity mapping and repository
+
+- Unit tests

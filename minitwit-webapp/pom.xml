@@ -10,6 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- ###### Parent Module for the web application ####### -->
     <groupId>com.stevegocoding.ssh-minitwit-webapp</groupId>
     <artifactId>minitwit-webapp</artifactId>
     <packaging>pom</packaging>
@@ -19,6 +20,15 @@
         <module>../minitwit-domain</module>
         <module>../minitwit-web</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>NoTests</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>

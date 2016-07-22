@@ -31,10 +31,16 @@
         <persistence-api.version>1.0.2</persistence-api.version>
 
         <!-- Junit -->
-        <junit.version>4.11</junit.version>
+        <junit.version>4.12</junit.version>
 
         <!-- MySql Driver -->
         <mysql-connector.version>5.1.31</mysql-connector.version>
+
+        <!-- HSQL Driver -->
+        <hsqldb.version>2.3.4</hsqldb.version>
+
+        <!-- H2 Driver -->
+        <h2db.version>1.4.192</h2db.version>
 
         <!-- Druid connection pool -->
         <druid.version>1.0.4</druid.version>
@@ -56,6 +62,7 @@
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-email.version>1.3.2</commons-email.version>
         <commons-beanutils.version>1.9.2</commons-beanutils.version>
+        <guava.version>19.0</guava.version>
 
         <!--##### 插件版本变量 start ###### -->
         <tomcat6-maven-plugin.version>2.1</tomcat6-maven-plugin.version>
@@ -70,6 +77,7 @@
         <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
         <maven-dependency-plugin.version>2.5.1</maven-dependency-plugin.version>
         <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
         <!--####### 插件版本变量 end ###### -->
 
         <jetty-port.version>8080</jetty-port.version>
@@ -91,39 +99,74 @@
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-            <!-- ####### Spring 相关包 - end #######-->
 
-
-            <!--这个jar 文件包含支持UI模版（Velocity，FreeMarker，JasperReports），邮件服务，脚本服务(JRuby)，缓存Cache（EHCache），任务计划Scheduling（uartz）方面的类。 外部依赖spring-context-->
+            <!-- spring配置 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!--这个jar 文件包含支持UI模版（Velocity，FreeMarker，JasperReports），
+            邮件服务，脚本服务(JRuby), 缓存Cache（EHCache），任务计划Scheduling（uartz）方面的类。
+            外部依赖spring-context
+            -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
                 <version>${spring.version}</version>
             </dependency>
 
+            <!-- spring jdbc -->
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-aspects</artifactId>
+                <artifactId>spring-jdbc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- ####### Spring 相关包 - end #######-->
-
-            <!-- ###### Persistence 相关包 - start ####### -->
+            <!-- spring orm -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
                 <version>${spring.version}</version>
             </dependency>
 
+            <!-- spring test -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- spring aop -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!-- spring aspects -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!-- ####### Spring 相关包 - end #######-->
+
+            <!-- ###### Persistence 相关包 - start ####### -->
+
+            <!-- hibernate 核心 -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+
+            <!-- hibernate验证 -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate.version}</version>
             </dependency>
 
@@ -133,6 +176,20 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <!-- HyperSQL -->
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsqldb.version}</version>
+            </dependency>
+
+            <!-- H2 DB -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2db.version}</version>
             </dependency>
 
             <dependency>
@@ -225,6 +282,19 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <!-- Guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <!-- ###### 集中管理依赖包 end ###### -->
@@ -245,6 +315,12 @@
                         <encoding>UTF-8</encoding>
                         <showWarnings>true</showWarnings>
                     </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
                 </plugin>
 
                 <!--jetty插件-->
